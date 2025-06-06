@@ -1,0 +1,18 @@
+---
+- name: Deploy to tomcat
+  hosts: web
+  become: yes
+  tasks: 
+    - name: Copy war file to tomcat
+      copy: 
+        src: "/var/snap/jenkins/4865/workspace/5/target/5.war"
+        dest: "/opt/tomcat/webapps/5.war"
+        remote_src: no
+        
+    - name: Stop Tomcat
+      shell: /opt/tomcat/bin/shutdown.sh
+      ignore_errors: yes
+      become: yes
+    
+    - name: Start Tomcat
+      shell: /opt/tomcat/bin/startup.sh
